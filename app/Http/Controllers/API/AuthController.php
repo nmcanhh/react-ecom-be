@@ -49,22 +49,30 @@ class AuthController extends Controller
                 'validator_erros' => $validator->messages(),
             ]);
         } else {
-           $user = User::where('email', $request->email)->first();
-           if(!$user || ! Hash::check($request->password, $user->password))
-           {
-               return response()->json([
-                   'status' => 401,
-                   'message'=>'Invalid Credentials'
-               ]);
-           } else {
-               $token = $user->createToken($user->email . '_Token')->plainTextToken;
-               return response()->json([
-                   'status' => 200,
-                   'username' => $user->name,
-                   'token' => $token,
-                   'message' => 'Logged In Successfully'
-               ]);
-           }
+            $user = User::where('email', $request->email)->first();
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Invalid Credentials'
+                ]);
+            } else {
+                $token = $user->createToken($user->email . '_Token')->plainTextToken;
+                return response()->json([
+                    'status' => 200,
+                    'username' => $user->name,
+                    'token' => $token,
+                    'message' => 'Logged In Successfully'
+                ]);
+            }
         }
+    }
+
+    public function logout()
+    {
+        auth()->user()->tokens()->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Logged Out Successfully'
+        ]);
     }
 }
