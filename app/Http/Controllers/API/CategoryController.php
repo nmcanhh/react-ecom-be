@@ -9,15 +9,23 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
+    public function index()
+    {
+        $category = Category::all();
+        return response()->json([
+            'status' => 200,
+            'category' => $category,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-           'meta_title'=>'required|max:191',
-           'slug'=>'required|max:191',
-           'name'=>'required|max:191',
+            'meta_title' => 'required|max:191',
+            'slug' => 'required|max:191',
+            'name' => 'required|max:191',
         ]);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json([
                 'status' => 400,
                 'errors' => $validator->messages(),
