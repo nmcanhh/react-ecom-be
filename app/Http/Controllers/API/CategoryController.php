@@ -18,6 +18,15 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function allcategory()
+    {
+        $category = Category::where('status', '0')->get();
+        return response()->json([
+            'status' => 200,
+            'category' => $category
+        ]);
+    }
+
     public function edit($id)
     {
         $category = Category::find($id);
@@ -100,11 +109,12 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $category = Category::find($id);
         if ($category) {
 
-           $category->delete();
+            $category->delete();
             return response()->json([
                 'status' => 200,
                 'message' => 'Category Deleted Successfully'

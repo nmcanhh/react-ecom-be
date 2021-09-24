@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,9 @@ use App\Http\Controllers\API\CategoryController;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum','isAPIAdmin')->group(function() {
+Route::middleware('auth:sanctum', 'isAPIAdmin')->group(function () {
     Route::get('/checkingAuthenticated', function () {
-       return response()->json(['message'=>'You are in', 'status'=>200], 200);
+        return response()->json(['message' => 'You are in', 'status' => 200], 200);
     });
 
     // Category
@@ -29,11 +30,14 @@ Route::middleware('auth:sanctum','isAPIAdmin')->group(function() {
     Route::get('edit-category/{id}', [CategoryController::class, 'edit']);
     Route::put('update-category/{id}', [CategoryController::class, 'update']);
     Route::delete('delete-category/{id}', [CategoryController::class, 'destroy']);
+    Route::get('all-category', [CategoryController::class, 'allcategory']);
 
+    // Product
+    Route::post('store-product', [ProductController::class, 'store']);
 
 });
 
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('logout', [AuthController::class, 'logout']);
 });
